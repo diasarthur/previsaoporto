@@ -1,1 +1,36 @@
+name: Executar Relatorio Hidrometeorologico
 
+on:
+  schedule:
+    # Executa automaticamente de segunda a sexta, às 07:00 da manhã (horário de Brasília)
+    - cron: '0 10 * * 1-5'
+  workflow_dispatch: # Permite que você rode o script manualmente clicando num botão no GitHub
+
+jobs:
+  executar-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar bibliotecas
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Executar script de coleta
+        run: python script.py
+
+      - name: Salvar planilha atualizada no GitHub
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.xlsx
+          git commit -m "Atualização automática do relatório [skip ci]" || exit 0
+          git push
