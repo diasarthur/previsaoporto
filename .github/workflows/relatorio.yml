@@ -27,10 +27,10 @@ jobs:
       - name: Executar script de coleta
         run: python script.py
 
-      - name: Salvar planilha atualizada no GitHub
+      - name: Salvar planilha no GitHub
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add *.xlsx
+          git add -A
           git commit -m "Atualização automática do relatório [skip ci]" || exit 0
           git push
