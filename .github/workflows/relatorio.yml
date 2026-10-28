@@ -2,16 +2,14 @@ name: Executar Relatorio Hidrometeorologico
 
 on:
   schedule:
-    # Executa automaticamente de segunda a sexta, às 07:00 da manhã (horário de Brasília)
     - cron: '0 10 * * 1-5'
-  workflow_dispatch: # Permite que você rode o script manualmente clicando num botão no GitHub
+  workflow_dispatch:
 
 jobs:
-  executar-script:
+  executar:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Baixar código do repositório
+      - name: Baixar codigo do repositorio
         uses: actions/checkout@v3
 
       - name: Configurar Python
@@ -31,6 +29,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "Atualização automática do relatório [skip ci]" || exit 0
+          git add relatorio_hidrometeo.xlsx
+          git commit -m "Atualizacao automatica [skip ci]" || exit 0
           git push
